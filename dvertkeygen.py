@@ -97,8 +97,8 @@ def main():
     pathlib.Path(os.path.dirname(args.output)).mkdir(parents=True, exist_ok=True)
     with open(args.output, "w+", encoding="utf-8") as hotkeyf:
         print(AHK_PRELUDE, file=hotkeyf, flush=True)
-        print(f"dvorak := {args.layoutid}\n", file=hotkeyf, flush=True)
-        print("#If get_layout() = dvorak\n", file=hotkeyf, flush=True)
+        print(f"alternative := {args.layoutid}\n", file=hotkeyf, flush=True)
+        print("#If get_layout() = alternative\n", file=hotkeyf, flush=True)
         for qwerty, alt in mapping.items():
             print(f"*^{alt}::", file=hotkeyf, flush=True)
             print(f"*!{alt}::", file=hotkeyf, flush=True)
