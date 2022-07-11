@@ -7,7 +7,7 @@ import pathlib
 
 SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
 
-DEFAULT_MAPPING_FILE_PATH = os.path.join(SCRIPT_DIR, "mapping.csv")
+DEFAULT_MAPPING_PATH = os.path.join(SCRIPT_DIR, "mappings", "mapping_default.csv")
 ICON_FILE_PATH = os.path.join(SCRIPT_DIR, "letter_d.ico")
 AHK_COMPILER_PATH = """C:\Program Files\AutoHotkey\Compiler\Ahk2Exe.exe"""
 
@@ -46,7 +46,10 @@ parser = argparse.ArgumentParser(description="Generates dvertkey AHK mapping scr
 parser.add_argument("--mapping",
                     type=str,
                     required=False,
-                    default=DEFAULT_MAPPING_FILE_PATH,
+                    default=os.path.join(
+                        SCRIPT_DIR,
+                        "mappings",
+                        "mapping_" + get_current_keyboard_layout_string().replace("0x", "") + ".csv"),
                     help="Path to the CSV file containing QWERTY->Dvorak mappings")
 parser.add_argument("--layoutid",
                     type=str,
@@ -82,8 +85,11 @@ parser.add_argument("--compressexe",
 def main():
     args = parser.parse_args()
 
+    mapping_path = args.mapping
+    if not (os.path.exists(mapping_path) and os.path.isfile(mapping_path)):
+        mapping_path = DEFAULT_MAPPING_PATH
     mapping = {}
-    with open(args.mapping, "r", encoding="utf-8") as mappingf:
+    with open(mapping_path, "r", encoding="utf-8") as mappingf:
         reader = csv.DictReader(mappingf)
         for row in reader:
             mapping[row["US"]] = row["DV"]
