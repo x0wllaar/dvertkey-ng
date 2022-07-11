@@ -37,7 +37,9 @@ def get_current_keyboard_layout():
 
 def get_current_keyboard_layout_string():
     kbdl = get_current_keyboard_layout()
-    return hex(kbdl).upper().replace("0X", "0x")
+    kbdl_str = hex(kbdl).upper().replace("0X", "")
+    kbdl_str = "0" * (8 - len(kbdl_str)) + kbdl_str
+    return "0x" + kbdl_str
 
 
 parser = argparse.ArgumentParser(description="Generates dvertkey AHK mapping scripts from keyboard mappings")
