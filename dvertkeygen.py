@@ -92,17 +92,17 @@ def main():
     with open(mapping_path, "r", encoding="utf-8") as mappingf:
         reader = csv.DictReader(mappingf)
         for row in reader:
-            mapping[row["US"]] = row["DV"]
+            mapping[row["QWERTY"]] = row["ALT"]
 
     pathlib.Path(os.path.dirname(args.output)).mkdir(parents=True, exist_ok=True)
     with open(args.output, "w+", encoding="utf-8") as hotkeyf:
         print(AHK_PRELUDE, file=hotkeyf, flush=True)
         print(f"dvorak := {args.layoutid}\n", file=hotkeyf, flush=True)
         print("#If get_layout() = dvorak\n", file=hotkeyf, flush=True)
-        for us, dv in mapping.items():
-            print(f"*^{dv}::", file=hotkeyf, flush=True)
-            print(f"*!{dv}::", file=hotkeyf, flush=True)
-            print(f"*#{dv}::Send {{Blind}}{us}\n", file=hotkeyf, flush=True)
+        for qwerty, alt in mapping.items():
+            print(f"*^{alt}::", file=hotkeyf, flush=True)
+            print(f"*!{alt}::", file=hotkeyf, flush=True)
+            print(f"*#{alt}::Send {{Blind}}{qwerty}\n", file=hotkeyf, flush=True)
 
     if args.generateexe:
         pathlib.Path(os.path.dirname(args.exeoutput)).mkdir(parents=True, exist_ok=True)
