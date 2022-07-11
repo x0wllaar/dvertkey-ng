@@ -100,9 +100,10 @@ def main():
         print(f"alternative := {args.layoutid}\n", file=hotkeyf, flush=True)
         print("#If get_layout() = alternative\n", file=hotkeyf, flush=True)
         for qwerty, alt in mapping.items():
-            print(f"*^{alt}::", file=hotkeyf, flush=True)
-            print(f"*!{alt}::", file=hotkeyf, flush=True)
-            print(f"*#{alt}::Send {{Blind}}{qwerty}\n", file=hotkeyf, flush=True)
+            if qwerty != alt:
+                print(f"*^{alt}::", file=hotkeyf, flush=True)
+                print(f"*!{alt}::", file=hotkeyf, flush=True)
+                print(f"*#{alt}::Send {{Blind}}{qwerty}\n", file=hotkeyf, flush=True)
 
     if args.generateexe:
         pathlib.Path(os.path.dirname(args.exeoutput)).mkdir(parents=True, exist_ok=True)
